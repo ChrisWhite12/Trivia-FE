@@ -1,7 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FC } from 'react'
-import { View, StyleSheet, Text, Pressable } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import { GlobalStyles } from '../constants/styles';
+import CustomButton from '../components/CustomButton';
 
 interface Props {
 
@@ -24,24 +26,16 @@ const MainScreen: FC<Props> = ({ }) => {
 
   return (
     <View style={styles.screen}>
-      <Text>Main Screen</Text>
       <View>
-        <View>
-          <Pressable onPress={handleJoinGame}>
-            <Text>Join Game</Text>
-          </Pressable>
-        </View>
-        <View>
-          <Pressable onPress={handleCreateGame}>
-            <Text>Create Game</Text>
-          </Pressable>
-        </View>
-
-        <View>
-          <Pressable onPress={handleViewQuestions}>
-            <Text>View Questions</Text>
-          </Pressable>
-        </View>
+        <CustomButton onPress={handleJoinGame}>
+          Join Game
+        </CustomButton>       
+        <CustomButton onPress={handleCreateGame}>
+          Create Game
+        </CustomButton>
+        <CustomButton onPress={handleViewQuestions}>
+          View Questions
+        </CustomButton>
       </View>
     </View>
   );
@@ -54,6 +48,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: GlobalStyles.background
   },
   buttonContainer: {
     padding: 10,

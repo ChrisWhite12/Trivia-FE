@@ -4,12 +4,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import SigninScreen from './screens/SigninScreen';
 import MainScreen from './screens/MainScreen';
-import CreateRoomScreen from './screens/CreateRoomScreen';
-import JoinScreen from './screens/JoinScreen';
-import GameScreen from './screens/GameScreen';
-import QAListScreen from './screens/QAListScreen';
-import CreateQAScreen from './screens/CreateQAScreen';
-import QADetailScreen from './screens/QADetailScreen';
+import CreateRoomScreen from './screens/game/CreateRoomScreen';
+import JoinScreen from './screens/game/JoinScreen';
+import GameScreen from './screens/game/GameScreen';
+import QAListScreen from './screens/questions/QAListScreen';
+import CreateQAScreen from './screens/questions/CreateQAScreen';
 
 const Stack = createStackNavigator();
 
@@ -17,14 +16,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='SigninScreen' component={SigninScreen} />
-        <Stack.Screen name='MainScreen' component={MainScreen} />
-        <Stack.Screen name='CreateGame' component={CreateRoomScreen} />
-        <Stack.Screen name='JoinGame' component={JoinScreen} />
-        <Stack.Screen name='GameScreen' component={GameScreen} />
-        <Stack.Screen name='QuestionList' component={QAListScreen} />
-        <Stack.Screen name='QuestionCreate' component={CreateQAScreen} />
-        <Stack.Screen name='QuestionDetail' component={QADetailScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='SigninScreen' component={SigninScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='MainScreen' component={MainScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='CreateGame' component={CreateRoomScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='JoinGame' component={JoinScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='GameScreen' component={GameScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='QuestionList' component={QAListScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='QuestionCreate' component={CreateQAScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

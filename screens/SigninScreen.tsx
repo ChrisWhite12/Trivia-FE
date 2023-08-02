@@ -1,7 +1,9 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FC } from 'react'
-import { View, StyleSheet, Pressable, Text } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import { GlobalStyles } from '../constants/styles';
+import CustomButton from '../components/CustomButton';
 
 interface Props {
 
@@ -12,13 +14,9 @@ const SigninScreen: FC<Props> = ({ }) => {
 
   return (
     <View style={styles.screen}>
-      <View>
-        <Pressable onPress={() => navigate('MainScreen')}>
-          <Text>
-            Sign In
-          </Text>
-        </Pressable>
-      </View>
+      <CustomButton onPress={() => navigate('MainScreen')}>
+        Sign In
+      </CustomButton>
     </View>
   );
 };
@@ -31,6 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: GlobalStyles.background
   },
   buttonContainer: {
     padding: 20,

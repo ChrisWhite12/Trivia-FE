@@ -1,15 +1,16 @@
 import { FC } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
+import { GlobalStyles } from '../../constants/styles';
 
 interface Props {
 
 }
 
-const GameScreen: FC<Props> = ({}) => {
-  
+const GameScreen: FC<Props> = ({ }) => {
+
   return (
     <View style={styles.screen}>
-     <Text>Game Screen</Text>
+      <Text>Game Screen</Text>
     </View>
   );
 };
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-}
+    backgroundColor: GlobalStyles.background
+  }
 });
 export default GameScreen
