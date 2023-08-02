@@ -1,10 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { FC, useState } from 'react'
-import { View, StyleSheet, Pressable, Text, FlatList } from 'react-native'
+import { FC, useEffect, useState } from 'react'
+import { View, StyleSheet, Pressable, Text, FlatList, ActivityIndicator } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
 import CustomButton from '../../components/CustomButton';
 import IconButton from '../../components/IconButton';
+import { useQuery } from 'react-query';
+import { getQuestions } from '../../api/questions';
+
+interface QuestionItem {
+  id: string,
+  title: string,
+}
 
 interface Props {
 
@@ -12,31 +19,34 @@ interface Props {
 
 const QAListScreen: FC<Props> = ({ }) => {
   const { navigate } = useNavigation<StackNavigationProp<any>>()
-  const [questions, setQuestions] = useState([
-    {
-      id: '1',
-      title: 'Question1'
-    },
-    {
-      id: '2',
-      title: 'Question2'
-    },
-    {
-      id: '3',
-      title: 'Question3'
-    }
-  ])
+  const [questions, setQuestions] = useState<QuestionItem[]>([])
+
+  const { isLoading, data } = useQuery(["getQuestions"], async () => getQuestions());
 
   const handleAdd = () => {
     navigate('QuestionCreate')
   }
 
   const handleDelete = (index: string) => {
+    // TODO delete questions from backend
     setQuestions(questions.filter((item) => item.id !== index))
   }
 
   // TODO load questions from backend
-  // TODO question detail screen / edit ??
+
+  useEffect(() => {
+    if (!data) return;
+    setQuestions(data.map((item) => ({
+      id: item.id.toString(),
+      title: item.title
+    })))
+  }, [isLoading, data]);
+
+  if (isLoading) return (
+    <View style={styles.screen}>
+      <ActivityIndicator color="white" />
+    </View>
+  )
 
   return (
     <View style={styles.screen}>
@@ -72,7 +82,7 @@ const styles = StyleSheet.create({
     margin: 5,
     minWidth: 200,
     borderRadius: 5,
-    flexDirection:'row',
+    flexDirection: 'row',
     justifyContent: 'space-between'
   }
 });

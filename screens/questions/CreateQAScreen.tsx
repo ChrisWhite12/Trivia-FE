@@ -6,6 +6,7 @@ import { Picker } from '@react-native-picker/picker';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Checkbox from 'expo-checkbox';
 
 interface Props {
 
@@ -21,6 +22,7 @@ const CreateQAScreen: FC<Props> = ({ }) => {
     d: ''
   })
   const [question, setQuestion] = useState('')
+  const [correct, setCorrect] = useState<number>(0);
 
   const handleQuestionChange = (value: string) => {
     setQuestion(value);
@@ -31,7 +33,11 @@ const CreateQAScreen: FC<Props> = ({ }) => {
   }
 
   const handleChange = (label: string) => (value: string) => {
-    setAnswers({...answers, [label]: value})
+    setAnswers({ ...answers, [label]: value })
+  }
+
+  const handleCorrectChange = (value: number) => (_checked: boolean) => {
+    setCorrect(value)
   }
 
   const handleCreate = () => {
@@ -45,10 +51,13 @@ const CreateQAScreen: FC<Props> = ({ }) => {
     navigate('QuestionList')
   }
 
+  // TODO - get picker items from API
+  // TODO - get correct answer
+
   return (
     <View style={styles.screen}>
       <Text style={styles.text}>Question</Text>
-      <CustomInput inputProps={{ value: question, onChangeText: handleQuestionChange}} />
+      <CustomInput inputProps={{ value: question, onChangeText: handleQuestionChange }} />
 
       <Text style={styles.text}>Category</Text>
       <Picker
@@ -63,34 +72,46 @@ const CreateQAScreen: FC<Props> = ({ }) => {
       </Picker>
 
       <View>
-        <CustomInput
-          label='A'
-          inputProps={{
-            value: answers.a,
-            onChangeText: handleChange('a')
-          }}
-        />
-        <CustomInput
-          label='B'
-          inputProps={{
-            value: answers.b,
-            onChangeText: handleChange('b')
-          }}
-        />
-        <CustomInput
-          label='C'
-          inputProps={{
-            value: answers.c,
-            onChangeText: handleChange('c')
-          }}
-        />
-        <CustomInput
-          label='D'
-          inputProps={{
-            value: answers.d,
-            onChangeText: handleChange('d')
-          }}
-        />
+        <View style={styles.flexContainer}>
+          <CustomInput
+            label='A'
+            inputProps={{
+              value: answers.a,
+              onChangeText: handleChange('a')
+            }}
+          />
+          <Checkbox value={correct === 0} onValueChange={handleCorrectChange(0)} />
+        </View>
+        <View style={styles.flexContainer}>
+          <CustomInput
+            label='B'
+            inputProps={{
+              value: answers.b,
+              onChangeText: handleChange('b')
+            }}
+          />
+          <Checkbox value={correct === 1} onValueChange={handleCorrectChange(1)} />
+        </View>
+        <View style={styles.flexContainer}>
+          <CustomInput
+            label='C'
+            inputProps={{
+              value: answers.c,
+              onChangeText: handleChange('c')
+            }}
+          />
+          <Checkbox value={correct === 2} onValueChange={handleCorrectChange(2)} />
+        </View>
+        <View style={styles.flexContainer}>
+          <CustomInput
+            label='D'
+            inputProps={{
+              value: answers.d,
+              onChangeText: handleChange('d')
+            }}
+          />
+          <Checkbox value={correct === 3} onValueChange={handleCorrectChange(3)} />
+        </View>
       </View>
       <CustomButton onPress={handleCreate}>Create</CustomButton>
     </View>
@@ -117,6 +138,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 5,
     color: 'white'
+  },
+  flexContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 });
 export default CreateQAScreen

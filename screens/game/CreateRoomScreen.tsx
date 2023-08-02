@@ -7,6 +7,8 @@ import { GlobalStyles } from '../../constants/styles';
 import CustomInput from '../../components/CustomInput';
 import CheckboxWithLabel from '../../components/CheckboxWithLabel';
 import CustomButton from '../../components/CustomButton';
+import { useQuery } from 'react-query';
+import { getCategories } from '../../api/categories';
 
 interface Props {
 
@@ -16,6 +18,8 @@ const CreateRoomScreen: FC<Props> = ({ }) => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const [title, setTitle] = useState('')
   const [areas, setAreas] = useState<string[]>([])
+
+  const { isLoading, data } = useQuery(["getCategories"], async () => getCategories());
 
   const handleStart = () => {
     console.log('title, areas', title, areas);
