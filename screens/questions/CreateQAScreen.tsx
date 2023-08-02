@@ -1,12 +1,11 @@
 import { FC, useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
-import CustomInput from '../../components/CustomInput';
 import { Picker } from '@react-native-picker/picker';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Checkbox from 'expo-checkbox';
+import { CheckBox, Input } from '@rneui/themed';
 
 interface Props {
 
@@ -36,7 +35,7 @@ const CreateQAScreen: FC<Props> = ({ }) => {
     setAnswers({ ...answers, [label]: value })
   }
 
-  const handleCorrectChange = (value: number) => (_checked: boolean) => {
+  const handleCorrectChange = (value: number) => () => {
     setCorrect(value)
   }
 
@@ -53,67 +52,49 @@ const CreateQAScreen: FC<Props> = ({ }) => {
 
   // TODO - get picker items from API
   // TODO - get correct answer
+  // rneui checkbox has background
 
   return (
     <View style={styles.screen}>
-      <Text style={styles.text}>Question</Text>
-      <CustomInput inputProps={{ value: question, onChangeText: handleQuestionChange }} />
+      <View style={styles.formContainer}>
+        <View>
+          <Input label="Question" value={question} onChangeText={handleQuestionChange} style={{ color: 'white' }} />
+        </View>
 
-      <Text style={styles.text}>Category</Text>
-      <Picker
-        selectedValue={category}
-        onValueChange={handleCategoryChange}
-        style={styles.picker}
-        dropdownIconColor="white"
-      >
-        <Picker.Item label='Movies' value='movies' />
-        <Picker.Item label='History' value='history' />
-        <Picker.Item label='Music' value='music' />
-      </Picker>
+        <View>
+          <Text style={styles.text}>Category</Text>
+          <Picker
+            selectedValue={category}
+            onValueChange={handleCategoryChange}
+            style={styles.picker}
+            dropdownIconColor="white"
+          >
+            <Picker.Item label='Movies' value='movies' />
+            <Picker.Item label='History' value='history' />
+            <Picker.Item label='Music' value='music' />
+          </Picker>
+        </View>
 
-      <View>
-        <View style={styles.flexContainer}>
-          <CustomInput
-            label='A'
-            inputProps={{
-              value: answers.a,
-              onChangeText: handleChange('a')
-            }}
-          />
-          <Checkbox value={correct === 0} onValueChange={handleCorrectChange(0)} />
+        <View>
+          <View style={styles.flexContainer}>
+            <Input label="1" value={answers.a} onChangeText={handleChange('a')} style={styles.answerFields} />
+            <CheckBox checked={correct === 0} onPress={handleCorrectChange(0)} containerStyle={styles.checkboxContainer} />
+          </View>
+          <View style={styles.flexContainer}>
+            <Input label="2" value={answers.b} onChangeText={handleChange('b')} style={styles.answerFields} />
+            <CheckBox checked={correct === 1} onPress={handleCorrectChange(1)} containerStyle={styles.checkboxContainer} />
+          </View>
+          <View style={styles.flexContainer}>
+            <Input label="3" value={answers.c} onChangeText={handleChange('c')} style={styles.answerFields} />
+            <CheckBox checked={correct === 2} onPress={handleCorrectChange(2)} containerStyle={styles.checkboxContainer} />
+          </View>
+          <View style={styles.flexContainer}>
+            <Input label="4" value={answers.d} onChangeText={handleChange('d')} style={styles.answerFields} />
+            <CheckBox checked={correct === 3} onPress={handleCorrectChange(3)} containerStyle={styles.checkboxContainer} />
+          </View>
         </View>
-        <View style={styles.flexContainer}>
-          <CustomInput
-            label='B'
-            inputProps={{
-              value: answers.b,
-              onChangeText: handleChange('b')
-            }}
-          />
-          <Checkbox value={correct === 1} onValueChange={handleCorrectChange(1)} />
-        </View>
-        <View style={styles.flexContainer}>
-          <CustomInput
-            label='C'
-            inputProps={{
-              value: answers.c,
-              onChangeText: handleChange('c')
-            }}
-          />
-          <Checkbox value={correct === 2} onValueChange={handleCorrectChange(2)} />
-        </View>
-        <View style={styles.flexContainer}>
-          <CustomInput
-            label='D'
-            inputProps={{
-              value: answers.d,
-              onChangeText: handleChange('d')
-            }}
-          />
-          <Checkbox value={correct === 3} onValueChange={handleCorrectChange(3)} />
-        </View>
+        <CustomButton onPress={handleCreate}>Create</CustomButton>
       </View>
-      <CustomButton onPress={handleCreate}>Create</CustomButton>
     </View>
   );
 };
@@ -141,8 +122,19 @@ const styles = StyleSheet.create({
   },
   flexContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    maxWidth: 250
+  },
+  formContainer: {
+    paddingHorizontal: 50,
+    justifyContent: 'center',
+    alignContent: 'center'
+  },
+  answerFields: {
+    color: 'white',
+  },
+  checkboxContainer: {
+    backgroundColor: 'transparent'
   }
 });
 export default CreateQAScreen

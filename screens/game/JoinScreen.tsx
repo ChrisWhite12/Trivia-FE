@@ -5,6 +5,7 @@ import { View, StyleSheet, Text } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
 import CustomButton from '../../components/CustomButton';
 import CustomInput from '../../components/CustomInput';
+import { Input } from '@rneui/themed';
 
 interface Props {
 
@@ -26,7 +27,7 @@ const JoinScreen: FC<Props> = ({ }) => {
 
   return (
     <View style={styles.screen}>
-      <CustomInput inputProps={{ value: code, onChangeText: handleCodeChange }} />
+      <Input label="Code" value={code} onChangeText={handleCodeChange} />
       <CustomButton onPress={handleEnter}>
         Enter
       </CustomButton>

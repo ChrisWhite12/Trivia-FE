@@ -2,13 +2,14 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Checkbox from 'expo-checkbox';
 import { FC, useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, GestureResponderEvent } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
 import CustomInput from '../../components/CustomInput';
 import CheckboxWithLabel from '../../components/CheckboxWithLabel';
 import CustomButton from '../../components/CustomButton';
 import { useQuery } from 'react-query';
 import { getCategories } from '../../api/categories';
+import { CheckBox, Input } from '@rneui/themed';
 
 interface Props {
 
@@ -31,8 +32,8 @@ const CreateRoomScreen: FC<Props> = ({ }) => {
     setTitle(value)
   }
 
-  const handleCategoryChange = (value: string) => (checked: boolean) => {
-    if (!checked) {
+  const handleCategoryChange = (value: string) => () => {
+    if (!!areas.find((item) => item === value)) {
       setAreas(areas.filter((item) => item !== value))
     }
 
@@ -42,30 +43,36 @@ const CreateRoomScreen: FC<Props> = ({ }) => {
 
   return (
     <View style={styles.screen}>
-      <View>
-        <Text style={styles.text}>Title</Text>
-        <CustomInput inputProps={{ value: title, onChangeText: handleTitleChange }} />
-      </View>
+      <Input 
+      label="Title" 
+      value={title} 
+      onChangeText={handleTitleChange} 
+      style={styles.input}
+      containerStyle={styles.inputContainer}
+      />
       <View>
         <Text style={styles.text}>Areas</Text>
-        <CheckboxWithLabel
+        <CheckBox
           checked={!!areas.find((item) => item === 'movies')}
-          onChange={handleCategoryChange('movies')}
-        >
-          Movies
-        </CheckboxWithLabel>
-        <CheckboxWithLabel
+          onPress={handleCategoryChange('movies')}
+          title={"Movies"}
+          containerStyle={styles.checkboxContainer}
+          textStyle={styles.checkbox}
+        />
+        <CheckBox
           checked={!!areas.find((item) => item === 'history')}
-          onChange={handleCategoryChange('history')}
-        >
-          History
-        </CheckboxWithLabel>
-        <CheckboxWithLabel
+          onPress={handleCategoryChange('history')}
+          title={"History"}
+          containerStyle={styles.checkboxContainer}
+          textStyle={styles.checkbox}
+        />
+        <CheckBox
           checked={!!areas.find((item) => item === 'music')}
-          onChange={handleCategoryChange('music')}
-        >
-          Music
-        </CheckboxWithLabel>
+          onPress={handleCategoryChange('music')}
+          title={"Music"}
+          containerStyle={styles.checkboxContainer}
+          textStyle={styles.checkbox}
+        />
       </View>
       <CustomButton onPress={handleStart}>
         Start
@@ -87,6 +94,18 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     padding: 5,
+    color: 'white'
+  },
+  checkboxContainer: {
+    backgroundColor: 'transparent',
+  },
+  checkbox: {
+    color: 'white'
+  },
+  inputContainer: {
+    maxWidth: 200
+  },
+  input: {
     color: 'white'
   }
 });

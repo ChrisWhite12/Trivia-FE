@@ -7,9 +7,11 @@ import CustomButton from '../../components/CustomButton';
 import IconButton from '../../components/IconButton';
 import { useQuery } from 'react-query';
 import { getQuestions } from '../../api/questions';
+import { Button, Divider } from '@rneui/themed';
+import { mockQuestions } from './mockQuestions';
 
 interface QuestionItem {
-  id: string,
+  id: number,
   title: string,
 }
 
@@ -19,7 +21,7 @@ interface Props {
 
 const QAListScreen: FC<Props> = ({ }) => {
   const { navigate } = useNavigation<StackNavigationProp<any>>()
-  const [questions, setQuestions] = useState<QuestionItem[]>([])
+  const [questions, setQuestions] = useState<QuestionItem[]>([...mockQuestions])
 
   const { isLoading, data } = useQuery(["getQuestions"], async () => getQuestions());
 
@@ -27,7 +29,7 @@ const QAListScreen: FC<Props> = ({ }) => {
     navigate('QuestionCreate')
   }
 
-  const handleDelete = (index: string) => {
+  const handleDelete = (index: number) => {
     // TODO delete questions from backend
     setQuestions(questions.filter((item) => item.id !== index))
   }
@@ -37,7 +39,7 @@ const QAListScreen: FC<Props> = ({ }) => {
   useEffect(() => {
     if (!data) return;
     setQuestions(data.map((item) => ({
-      id: item.id.toString(),
+      id: item.id,
       title: item.title
     })))
   }, [isLoading, data]);
@@ -53,17 +55,20 @@ const QAListScreen: FC<Props> = ({ }) => {
       <View>
         <FlatList
           data={questions}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={(question) => (
-            <View style={styles.listItem}>
-              <Text>{question.item.title}</Text>
-              <IconButton size={16} color='red' icon='trash' onPress={() => handleDelete(question.item.id)} />
+            <View>
+              <View style={styles.listItem}>
+                <Text>{question.item.title}</Text>
+                <IconButton size={16} color='red' icon='trash' onPress={() => handleDelete(question.item.id)} />
+              </View>
+              <Divider />
             </View>
           )}
         />
       </View>
-      <CustomButton onPress={handleAdd}>
-        ADD
-      </CustomButton>
+
+      <Button title={'Add'} onPress={handleAdd} style={{ margin: 5 }} />
     </View>
   );
 };
@@ -77,7 +82,7 @@ const styles = StyleSheet.create({
     paddingVertical: 100
   },
   listItem: {
-    backgroundColor: '#99CC55',
+    backgroundColor: '#CCCCFF',
     padding: 5,
     margin: 5,
     minWidth: 200,

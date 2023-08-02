@@ -1,5 +1,5 @@
 import { StackView, createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import SigninScreen from './screens/SigninScreen';
 import MainScreen from './screens/MainScreen';
@@ -17,27 +17,26 @@ export default function App() {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen options={{ headerShown: false }} name='SigninScreen' component={SigninScreen} />
-          <Stack.Screen options={{ headerShown: false }} name='MainScreen' component={MainScreen} />
-          <Stack.Screen options={{ headerShown: false }} name='CreateGame' component={CreateRoomScreen} />
-          <Stack.Screen options={{ headerShown: false }} name='JoinGame' component={JoinScreen} />
-          <Stack.Screen options={{ headerShown: false }} name='GameScreen' component={GameScreen} />
-          <Stack.Screen options={{ headerShown: false }} name='QuestionList' component={QAListScreen} />
-          <Stack.Screen options={{ headerShown: false }} name='QuestionCreate' component={CreateQAScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </QueryClientProvider>
+    <SafeAreaView style={styles.container}>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen options={{ headerShown: false }} name='SigninScreen' component={SigninScreen} />
+            <Stack.Screen options={{ headerShown: false }} name='MainScreen' component={MainScreen} />
+            <Stack.Screen options={{ headerShown: false }} name='CreateGame' component={CreateRoomScreen} />
+            <Stack.Screen options={{ headerShown: false }} name='JoinGame' component={JoinScreen} />
+            <Stack.Screen options={{ headerShown: false }} name='GameScreen' component={GameScreen} />
+            <Stack.Screen options={{ headerShown: false }} name='QuestionList' component={QAListScreen} />
+            <Stack.Screen options={{ headerShown: false }} name='QuestionCreate' component={CreateQAScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </QueryClientProvider>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
