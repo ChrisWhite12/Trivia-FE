@@ -3,7 +3,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { FC } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { GlobalStyles } from '../constants/styles';
-import CustomButton from '../components/CustomButton';
 import { Button } from '@rneui/themed';
 
 interface Props {

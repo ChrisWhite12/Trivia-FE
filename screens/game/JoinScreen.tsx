@@ -1,11 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FC, useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
-import CustomButton from '../../components/CustomButton';
-import CustomInput from '../../components/CustomInput';
-import { Input } from '@rneui/themed';
+import { Button, Input } from '@rneui/themed';
 
 interface Props {
 
@@ -28,9 +26,7 @@ const JoinScreen: FC<Props> = ({ }) => {
   return (
     <View style={styles.screen}>
       <Input label="Code" value={code} onChangeText={handleCodeChange} />
-      <CustomButton onPress={handleEnter}>
-        Enter
-      </CustomButton>
+      <Button title={'Enter'} onPress={handleEnter} radius="md" />
     </View>
   );
 };

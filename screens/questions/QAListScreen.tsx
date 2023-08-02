@@ -3,7 +3,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { FC, useEffect, useState } from 'react'
 import { View, StyleSheet, Pressable, Text, FlatList, ActivityIndicator } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
-import CustomButton from '../../components/CustomButton';
 import IconButton from '../../components/IconButton';
 import { useQuery } from 'react-query';
 import { getQuestions } from '../../api/questions';
@@ -68,7 +67,7 @@ const QAListScreen: FC<Props> = ({ }) => {
         />
       </View>
 
-      <Button title={'Add'} onPress={handleAdd} style={{ margin: 5 }} />
+      <Button title={'Add'} onPress={handleAdd} style={{ margin: 5 }} radius="md" />
     </View>
   );
 };

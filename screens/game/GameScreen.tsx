@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, ActivityIndicator, Pressable } from 'react-nati
 import { GlobalStyles } from '../../constants/styles';
 import { getQuestions } from '../../api/questions';
 import { useQuery } from 'react-query';
-import CustomButton from '../../components/CustomButton';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { mockQuestions } from '../questions/mockQuestions';
@@ -67,8 +66,8 @@ const GameScreen: FC<Props> = ({ }) => {
     return (
       <View style={styles.screen}>
         <View style={styles.summaryContainer}>
-        <Text style={styles.text}>Game Over</Text>
-        <Text style={styles.text}>Score: </Text>
+          <Text style={styles.text}>Game Over</Text>
+          <Text style={styles.text}>Score: </Text>
         </View>
         <Button title={'Exit'} onPress={handleExit} radius={'md'} />
       </View>
@@ -88,9 +87,7 @@ const GameScreen: FC<Props> = ({ }) => {
           </View>
         ))}
       </View>
-      <CustomButton onPress={handleNext}>
-        Next
-      </CustomButton>
+      <Button title={'Next'} onPress={handleNext} radius={'md'} />
     </View>
   );
 };

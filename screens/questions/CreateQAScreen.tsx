@@ -2,10 +2,9 @@ import { FC, useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
 import { Picker } from '@react-native-picker/picker';
-import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { CheckBox, Input } from '@rneui/themed';
+import { Button, CheckBox, Input } from '@rneui/themed';
 
 interface Props {
 
@@ -93,7 +92,7 @@ const CreateQAScreen: FC<Props> = ({ }) => {
             <CheckBox checked={correct === 3} onPress={handleCorrectChange(3)} containerStyle={styles.checkboxContainer} />
           </View>
         </View>
-        <CustomButton onPress={handleCreate}>Create</CustomButton>
+        <Button title={'Create'} onPress={handleCreate} radius={'md'} />
       </View>
     </View>
   );

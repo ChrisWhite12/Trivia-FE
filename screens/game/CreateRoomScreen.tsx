@@ -1,15 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Checkbox from 'expo-checkbox';
 import { FC, useState } from 'react'
-import { View, StyleSheet, Text, GestureResponderEvent } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
-import CustomInput from '../../components/CustomInput';
-import CheckboxWithLabel from '../../components/CheckboxWithLabel';
-import CustomButton from '../../components/CustomButton';
 import { useQuery } from 'react-query';
 import { getCategories } from '../../api/categories';
-import { CheckBox, Input } from '@rneui/themed';
+import { Button, CheckBox, Input } from '@rneui/themed';
 
 interface Props {
 
@@ -74,9 +70,7 @@ const CreateRoomScreen: FC<Props> = ({ }) => {
           textStyle={styles.checkbox}
         />
       </View>
-      <CustomButton onPress={handleStart}>
-        Start
-      </CustomButton>
+      <Button onPress={handleStart} title={'Start'} radius="md" />
     </View>
   );
 };
