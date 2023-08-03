@@ -15,7 +15,6 @@ const JoinScreen: FC<Props> = ({ }) => {
 
   const handleEnter = () => {
     // TODO Connect to backend, validate code, join room
-    console.log('code',code);
     navigate('GameScreen');
   }
 

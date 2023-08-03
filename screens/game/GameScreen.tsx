@@ -4,35 +4,29 @@ import { GlobalStyles } from '../../constants/styles';
 import { getQuestions } from '../../api/questions';
 import { useQuery } from 'react-query';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
-import { mockQuestions } from '../questions/mockQuestions';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { Button } from '@rneui/themed';
 
 interface Props {
-
+  route: RouteProp<any,any>
 }
 
-const GameScreen: FC<Props> = ({ }) => {
-  const { isLoading, data } = useQuery(["getQuestions"], async () => getQuestions());
+const GameScreen: FC<Props> = ({ route }) => {
+  const { isLoading, data: ApiQuestions } = useQuery(["getQuestions"], async () => getQuestions(route.params?.areas, 3));
   const [questionNumber, setQuestionNumber] = useState(0);
   const [playerStats, setPlayerStats] = useState([]);
-  const [selectedQuestion, setSelectedQuestion] = useState(mockQuestions[0]);
+  const [selectedQuestion, setSelectedQuestion] = useState(ApiQuestions?.[0]);
   const [gameOver, setGameOver] = useState(false);
   const [answerSelected, setAnswerSelected] = useState<number | undefined>();
   const { navigate } = useNavigation<StackNavigationProp<any>>();
 
-  // TODO - load 10 questions
-  // cycle through, getting players answers
-  // increment question, when all answered or time limit
-  // once 10 end game screen
-
   const handleNext = () => {
-    console.log('questionNumber', questionNumber, mockQuestions.length);
-    if (questionNumber + 1 === mockQuestions.length) {
+    if (!ApiQuestions?.length) return;
+    if (questionNumber + 1 === ApiQuestions.length) {
       setGameOver(true);
       return;
     }
-
+    setAnswerSelected(undefined)
     setQuestionNumber(questionNumber + 1)
   }
 
@@ -47,14 +41,14 @@ const GameScreen: FC<Props> = ({ }) => {
 
   useEffect(() => {
     console.log('questionNumber', questionNumber);
-    setSelectedQuestion(mockQuestions[questionNumber])
+    setSelectedQuestion(ApiQuestions?.[questionNumber])
   }, [questionNumber]);
 
   useEffect(() => {
     console.log('gameOver', gameOver);
   }, [gameOver]);
 
-  if (isLoading) {
+  if (isLoading || !selectedQuestion) {
     return (
       <View style={styles.screen}>
         <ActivityIndicator color="white" />
@@ -78,8 +72,8 @@ const GameScreen: FC<Props> = ({ }) => {
     <View style={styles.screen}>
       <Text style={{ color: "white" }}>Game Screen</Text>
       <View>
-        <Text style={{ color: "white" }}>Q: {mockQuestions[questionNumber].title}</Text>
-        {mockQuestions[questionNumber].answers.map((item, i) => (
+        <Text style={{ color: "white" }}>Q: {selectedQuestion.title}</Text>
+        {selectedQuestion.answers.map((item, i) => (
           <View key={i} style={[styles.listItem, i === answerSelected && styles.selected]}>
             <Pressable style={{ flex: 1 }} onPress={() => handlePressAnswer(i)}>
               <Text>{i + 1} - {item}</Text>

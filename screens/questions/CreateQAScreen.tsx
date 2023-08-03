@@ -45,23 +45,18 @@ const CreateQAScreen: FC<Props> = ({ }) => {
   const handleCreate = () => {
     const newAnswers = Object.values(answers)
     const categoryId = defaultCategories?.find((item) => item.name === category)?.id ?? 0
-    console.log('newAnswers, categoryId',newAnswers, categoryId);
 
-    const response = createQuestion({
+    createQuestion({
       title: question,
       correct,
       answers: newAnswers,
       categoryId,
     })
 
-    console.log('response',response);
-    // TODO - connect to backend, validation
+    // TODO - validation
+    // TODO - review DTOs
     navigate('QuestionList')
   }
-
-  // TODO - get picker items from API
-  // TODO - get correct answer
-  // rneui checkbox has background
 
   if (isLoading) return (
     <View style={styles.screen}>
@@ -69,6 +64,7 @@ const CreateQAScreen: FC<Props> = ({ }) => {
     </View>
   )
 
+  // TODO - fix weird keyboard issue, when selecting question
   return (
     <View style={styles.screen}>
       <View style={styles.formContainer}>
@@ -84,12 +80,9 @@ const CreateQAScreen: FC<Props> = ({ }) => {
             style={styles.picker}
             dropdownIconColor="white"
           >
-            {defaultCategories?.map((item) => (
-              <Picker.Item label={item.name} value={item.name} />
+            {defaultCategories?.map((item, i) => (
+              <Picker.Item key={i} label={item.name} value={item.name} />
             ))}
-            <Picker.Item label='Movies' value='movies' />
-            <Picker.Item label='History' value='history' />
-            <Picker.Item label='Music' value='music' />
           </Picker>
         </View>
 

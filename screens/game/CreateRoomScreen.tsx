@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
 import { useQuery } from 'react-query';
@@ -20,8 +20,8 @@ const CreateRoomScreen: FC<Props> = ({ }) => {
 
   const handleStart = () => {
     console.log('title, areas', title, areas);
-    // TODO get info from backend, start game
-    navigate('GameScreen');
+    // TODO get info from backend, start game, create room
+    navigate('GameScreen', { areas });
   }
 
   const handleTitleChange = (value: string) => {
@@ -30,7 +30,10 @@ const CreateRoomScreen: FC<Props> = ({ }) => {
 
   const handleCategoryChange = (value: string) => () => {
     if (!!areas.find((item) => item === value)) {
-      setAreas(areas.filter((item) => item !== value))
+      setAreas(areas.filter((item) => {
+        return item !== value
+      }))
+      return;
     }
 
     const newAreas = [...areas, value]
@@ -39,36 +42,25 @@ const CreateRoomScreen: FC<Props> = ({ }) => {
 
   return (
     <View style={styles.screen}>
-      <Input 
-      label="Title" 
-      value={title} 
-      onChangeText={handleTitleChange} 
-      style={styles.input}
-      containerStyle={styles.inputContainer}
+      <Input
+        label="Title"
+        value={title}
+        onChangeText={handleTitleChange}
+        style={styles.input}
+        containerStyle={styles.inputContainer}
       />
       <View>
         <Text style={styles.text}>Areas</Text>
-        <CheckBox
-          checked={!!areas.find((item) => item === 'movies')}
-          onPress={handleCategoryChange('movies')}
-          title={"Movies"}
-          containerStyle={styles.checkboxContainer}
-          textStyle={styles.checkbox}
-        />
-        <CheckBox
-          checked={!!areas.find((item) => item === 'history')}
-          onPress={handleCategoryChange('history')}
-          title={"History"}
-          containerStyle={styles.checkboxContainer}
-          textStyle={styles.checkbox}
-        />
-        <CheckBox
-          checked={!!areas.find((item) => item === 'music')}
-          onPress={handleCategoryChange('music')}
-          title={"Music"}
-          containerStyle={styles.checkboxContainer}
-          textStyle={styles.checkbox}
-        />
+        {data?.map((category) => (
+          <CheckBox
+            key={category.id}
+            checked={!!areas.find((item) => item === category.name)}
+            onPress={handleCategoryChange(category.name)}
+            title={category.name}
+            containerStyle={styles.checkboxContainer}
+            textStyle={styles.checkbox}
+          />
+        ))}
       </View>
       <Button onPress={handleStart} title={'Start'} radius="md" />
     </View>
