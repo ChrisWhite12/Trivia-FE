@@ -1,10 +1,13 @@
 import { FC, useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, ActivityIndicator } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Button, CheckBox, Input } from '@rneui/themed';
+import { createQuestion } from '../../api/questions';
+import { useQuery } from 'react-query';
+import { getCategories } from '../../api/categories';
 
 interface Props {
 
@@ -12,6 +15,7 @@ interface Props {
 
 const CreateQAScreen: FC<Props> = ({ }) => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const { isLoading, data: defaultCategories } = useQuery(["getCategories"], async () => getCategories());
   const [category, setCategory] = useState('movies');
   const [answers, setAnswers] = useState({
     a: '',
@@ -39,12 +43,18 @@ const CreateQAScreen: FC<Props> = ({ }) => {
   }
 
   const handleCreate = () => {
-    const QA = {
-      question,
-      category,
-      answers
-    }
-    console.log('creating QA', QA)
+    const newAnswers = Object.values(answers)
+    const categoryId = defaultCategories?.find((item) => item.name === category)?.id ?? 0
+    console.log('newAnswers, categoryId',newAnswers, categoryId);
+
+    const response = createQuestion({
+      title: question,
+      correct,
+      answers: newAnswers,
+      categoryId,
+    })
+
+    console.log('response',response);
     // TODO - connect to backend, validation
     navigate('QuestionList')
   }
@@ -52,6 +62,12 @@ const CreateQAScreen: FC<Props> = ({ }) => {
   // TODO - get picker items from API
   // TODO - get correct answer
   // rneui checkbox has background
+
+  if (isLoading) return (
+    <View style={styles.screen}>
+      <ActivityIndicator color="white" />
+    </View>
+  )
 
   return (
     <View style={styles.screen}>
@@ -68,6 +84,9 @@ const CreateQAScreen: FC<Props> = ({ }) => {
             style={styles.picker}
             dropdownIconColor="white"
           >
+            {defaultCategories?.map((item) => (
+              <Picker.Item label={item.name} value={item.name} />
+            ))}
             <Picker.Item label='Movies' value='movies' />
             <Picker.Item label='History' value='history' />
             <Picker.Item label='Music' value='music' />

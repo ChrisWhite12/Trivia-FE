@@ -1,5 +1,5 @@
-import { StackView, createStackNavigator } from '@react-navigation/stack';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import SigninScreen from './screens/SigninScreen';
 import MainScreen from './screens/MainScreen';
@@ -13,11 +13,10 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 const Stack = createStackNavigator();
 
 export default function App() {
-  // TODO connect to backend
   const queryClient = new QueryClient();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
           <Stack.Navigator>
@@ -38,5 +37,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

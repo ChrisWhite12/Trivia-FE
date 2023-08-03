@@ -5,7 +5,7 @@ import { View, StyleSheet, Pressable, Text, FlatList, ActivityIndicator } from '
 import { GlobalStyles } from '../../constants/styles';
 import IconButton from '../../components/IconButton';
 import { useQuery } from 'react-query';
-import { getQuestions } from '../../api/questions';
+import { deleteQuestion, getQuestions } from '../../api/questions';
 import { Button, Divider } from '@rneui/themed';
 import { mockQuestions } from './mockQuestions';
 
@@ -20,7 +20,7 @@ interface Props {
 
 const QAListScreen: FC<Props> = ({ }) => {
   const { navigate } = useNavigation<StackNavigationProp<any>>()
-  const [questions, setQuestions] = useState<QuestionItem[]>([...mockQuestions])
+  const [questions, setQuestions] = useState<QuestionItem[]>([])
 
   const { isLoading, data } = useQuery(["getQuestions"], async () => getQuestions());
 
@@ -29,11 +29,9 @@ const QAListScreen: FC<Props> = ({ }) => {
   }
 
   const handleDelete = (index: number) => {
-    // TODO delete questions from backend
+    deleteQuestion(index.toString())
     setQuestions(questions.filter((item) => item.id !== index))
   }
-
-  // TODO load questions from backend
 
   useEffect(() => {
     if (!data) return;
