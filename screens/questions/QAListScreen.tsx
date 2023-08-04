@@ -56,17 +56,16 @@ const QAListScreen: FC<Props> = ({ }) => {
           renderItem={(question) => (
             <View>
               <View style={styles.listItem}>
-                {/* <Pressable onPress={() => navigate('QuestionEdit', { id: question.item.id })}> */}
+                <Pressable style={styles.listItemPressable} onPress={() => navigate('QuestionEdit', { id: question.item.id })}>
                   <Text>{question.item.title}</Text>
-                  <IconButton size={16} color='red' icon='trash' onPress={() => handleDelete(question.item.id)} />
-                {/* </Pressable> */}
+                </Pressable>
+                <IconButton size={16} color='red' icon='trash' onPress={() => handleDelete(question.item.id)} />
               </View>
               <Divider />
             </View>
           )}
         />
       </View>
-
       <Button title={'Add'} onPress={handleAdd} style={{ margin: 5 }} radius="md" />
     </View>
   );
@@ -87,7 +86,9 @@ const styles = StyleSheet.create({
     minWidth: 200,
     borderRadius: 5,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+  },
+  listItemPressable: {
+    flex: 1,
   }
 });
 export default QAListScreen

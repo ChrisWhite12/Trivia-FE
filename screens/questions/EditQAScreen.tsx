@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { View, StyleSheet, Text, ActivityIndicator } from 'react-native'
 import { GlobalStyles } from '../../constants/styles';
 import { Picker } from '@react-native-picker/picker';
@@ -15,19 +15,19 @@ interface Props {
 
 const EditQAScreen: FC<Props> = ({ route }) => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const questionId = route.params?.id;
   const { isLoading, data: defaultCategories } = useQuery(["getCategories"], async () => getCategories());
-  const { isLoading: isLoadingQuestion, data: defaultQuestion } = useQuery(["getCategories"], async () => getQuestion(route.params?.id));
+  const { isLoading: isLoadingQuestion, data: defaultQuestion, refetch } = useQuery(["getQuestion"], async () => getQuestion(route.params?.id));
 
-  // TODO get category
-  const [category, setCategory] = useState<string>('movies');
+  const [category, setCategory] = useState<string>('');
   const [answers, setAnswers] = useState({
-    a: defaultQuestion?.answers[0],
-    b: defaultQuestion?.answers[1],
-    c: defaultQuestion?.answers[2],
-    d: defaultQuestion?.answers[3]
+    a: '',
+    b: '',
+    c: '',
+    d: ''
   })
-  const [question, setQuestion] = useState(defaultQuestion?.title)
-  const [correct, setCorrect] = useState<number>(defaultQuestion?.correct);
+  const [question, setQuestion] = useState('')
+  const [correct, setCorrect] = useState<number>(0);
 
   const handleQuestionChange = (value: string) => {
     setQuestion(value);
@@ -48,8 +48,8 @@ const EditQAScreen: FC<Props> = ({ route }) => {
   const handleUpdate = () => {
     const newAnswers = Object.values(answers)
     const categoryId = defaultCategories?.find((item) => item.name === category)?.id ?? 0
-
-    if(!question || newAnswers.includes(undefined)) return;
+    
+    if (!question) return;
 
     updateQuestion(
       route.params?.id,
@@ -63,7 +63,24 @@ const EditQAScreen: FC<Props> = ({ route }) => {
     navigate('QuestionList');
   }
 
-  if (isLoading || isLoadingQuestion) return (
+  useEffect(() => {
+    if (!defaultQuestion || !defaultCategories) return;
+    setAnswers({
+      a: defaultQuestion.answers[0],
+      b: defaultQuestion.answers[1],
+      c: defaultQuestion.answers[2],
+      d: defaultQuestion.answers[3]
+    })
+    setQuestion(defaultQuestion.title)
+    setCorrect(defaultQuestion.correct)
+    setCategory(defaultQuestion.category?.name ?? defaultCategories[0].name)
+  }, [defaultQuestion]);
+
+  useEffect(() => {
+    refetch();
+  }, [questionId]);
+
+  if (isLoading || isLoadingQuestion || !defaultCategories || !defaultQuestion) return (
     <View style={styles.screen}>
       <ActivityIndicator color="white" />
     </View>
@@ -85,7 +102,7 @@ const EditQAScreen: FC<Props> = ({ route }) => {
             style={styles.picker}
             dropdownIconColor="white"
           >
-            {defaultCategories?.map((item, i) => (
+            {defaultCategories.map((item, i) => (
               <Picker.Item key={i} label={item.name} value={item.name} />
             ))}
           </Picker>

@@ -8,15 +8,15 @@ interface PostBody {
 }
 
 export const getQuestions = async (areas?: string[], limit?: number) => {
-  if (limit || areas) {
-    const response = await axios.get<Question[]>(`http://10.0.2.2:3002/question`, {
-      params: {
-        limit,
-        areas
-      }
-    });
-    return response.data;
-  }
+  // if (limit || areas) {
+  //   const response = await axios.get<Question[]>(`http://10.0.2.2:3002/question`, {
+  //     params: {
+  //       limit,
+  //       areas
+  //     }
+  //   });
+  //   return response.data;
+  // }
   console.log('getting questions');
 
   const response = await axios.get<Question[]>("http://10.0.2.2:3002/question");
