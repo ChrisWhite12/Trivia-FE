@@ -3,7 +3,7 @@ import { View, StyleSheet, Pressable, Text, FlatList, ActivityIndicator } from '
 import { GlobalStyles } from '../../constants/styles';
 import IconButton from '../../components/IconButton';
 import { useQuery } from 'react-query';
-import { Button, Divider, Input } from '@rneui/themed';
+import { Button, Divider, Input, LinearProgress } from '@rneui/themed';
 import { createCategory, deleteCategory, getCategories } from '../../api/categories';
 
 
@@ -14,21 +14,29 @@ interface Props {
 const CategoryListScreen: FC<Props> = ({ }) => {
   const [categories, setCategories] = useState<Category[]>([])
   const [categoryText, setCategoryText] = useState('');
+  const [dataLoading, setDataLoading] = useState(false)
 
-  const { isLoading, data } = useQuery(["getCategories"], async () => getCategories());
+  const { isLoading, data, refetch } = useQuery(["getCategories"], async () => getCategories());
 
   const onChangeNewCategory = (value: string) => {
     setCategoryText(value)
   }
 
-  const handleCreate = () => {
-    createCategory({
+  const handleCreate = async () => {
+    setDataLoading(true)
+    await createCategory({
       name: categoryText
     })
+    setCategoryText('')
+    setDataLoading(false)
+    refetch()
   }
 
-  const handleDelete = (value: number) => {
-    deleteCategory(value)
+  const handleDelete = async (value: number) => {
+    setDataLoading(true)
+    await deleteCategory(value)
+    setDataLoading(false)
+    refetch()
   }
 
   useEffect(() => {
@@ -62,8 +70,23 @@ const CategoryListScreen: FC<Props> = ({ }) => {
           )}
         />
         <View style={styles.createContainer}>
-          <Input containerStyle={styles.inputField} label="New Category" onChangeText={onChangeNewCategory} value={categoryText} />
+          <Input
+            containerStyle={styles.inputFieldContainer}
+            inputStyle={styles.inputField}
+            label="New Category"
+            onChangeText={onChangeNewCategory}
+            value={categoryText}
+          />
           <Button radius="md" onPress={handleCreate} title="Create" />
+        </View>
+        <View style={styles.loadingContainer}>
+          {dataLoading
+            && <LinearProgress
+              style={{ marginVertical: 10 }}
+              value={dataLoading ? 1 : 0}
+              color='red'
+            />
+          }
         </View>
       </View>
     </View>
@@ -76,7 +99,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GlobalStyles.background,
-    paddingVertical: 100
+    paddingVertical: 100,
+    paddingHorizontal: 20,
   },
   listItem: {
     backgroundColor: '#CCCCFF',
@@ -93,7 +117,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   inputField: {
+    color: 'white'
+  },
+  inputFieldContainer: {
     maxWidth: 200
+  },
+  loadingContainer: {
+    padding: 10
   }
 });
 
