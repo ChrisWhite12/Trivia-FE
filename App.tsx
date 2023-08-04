@@ -9,6 +9,8 @@ import GameScreen from './screens/game/GameScreen';
 import QAListScreen from './screens/questions/QAListScreen';
 import CreateQAScreen from './screens/questions/CreateQAScreen';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import EditQAScreen from './screens/questions/EditQAScreen';
+import CategoryListScreen from './screens/categories/CategoryList';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +29,8 @@ export default function App() {
             <Stack.Screen options={{ headerShown: false }} name='GameScreen' component={GameScreen} />
             <Stack.Screen options={{ headerShown: false }} name='QuestionList' component={QAListScreen} />
             <Stack.Screen options={{ headerShown: false }} name='QuestionCreate' component={CreateQAScreen} />
+            <Stack.Screen options={{ headerShown: false }} name='QuestionEdit' component={EditQAScreen} />
+            <Stack.Screen options={{ headerShown: false }} name='CategoryList' component={CategoryListScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </QueryClientProvider>

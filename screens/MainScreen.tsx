@@ -24,12 +24,17 @@ const MainScreen: FC<Props> = ({ }) => {
     navigate('QuestionList')
   }
 
+  const handleViewCategories = () => {
+    navigate('CategoryList')
+  }
+
   return (
     <View style={styles.screen}>
       <View style={styles.buttonContainer}>
         <Button radius="md" title={'Join Game'} onPress={handleJoinGame} />
         <Button radius="md" title={'Create Game'} onPress={handleCreateGame} />
         <Button radius="md" title={'View Questions'} onPress={handleViewQuestions} />
+        <Button radius="md" title={'View Categories'} onPress={handleViewCategories} />
       </View>
     </View>
   );

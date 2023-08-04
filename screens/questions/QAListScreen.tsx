@@ -56,8 +56,10 @@ const QAListScreen: FC<Props> = ({ }) => {
           renderItem={(question) => (
             <View>
               <View style={styles.listItem}>
-                <Text>{question.item.title}</Text>
-                <IconButton size={16} color='red' icon='trash' onPress={() => handleDelete(question.item.id)} />
+                {/* <Pressable onPress={() => navigate('QuestionEdit', { id: question.item.id })}> */}
+                  <Text>{question.item.title}</Text>
+                  <IconButton size={16} color='red' icon='trash' onPress={() => handleDelete(question.item.id)} />
+                {/* </Pressable> */}
               </View>
               <Divider />
             </View>

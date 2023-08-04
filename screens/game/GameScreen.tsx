@@ -12,7 +12,7 @@ interface Props {
 }
 
 const GameScreen: FC<Props> = ({ route }) => {
-  const { isLoading, data: ApiQuestions } = useQuery(["getQuestions"], async () => getQuestions(route.params?.areas, 3));
+  const { isLoading, data: ApiQuestions } = useQuery(["getQuestion"], async () => getQuestions(route.params?.areas, 3));
   const [questionNumber, setQuestionNumber] = useState(0);
   const [playerStats, setPlayerStats] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(ApiQuestions?.[0]);
@@ -35,18 +35,12 @@ const GameScreen: FC<Props> = ({ route }) => {
   }
 
   const handlePressAnswer = (value: number) => {
-    console.log('value', value);
     setAnswerSelected(value)
   }
 
   useEffect(() => {
-    console.log('questionNumber', questionNumber);
     setSelectedQuestion(ApiQuestions?.[questionNumber])
   }, [questionNumber]);
-
-  useEffect(() => {
-    console.log('gameOver', gameOver);
-  }, [gameOver]);
 
   if (isLoading || !selectedQuestion) {
     return (
